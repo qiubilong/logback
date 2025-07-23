@@ -46,10 +46,10 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
     /**
      * The name of this logger
      */
-    private String name;
+    private String name;          /* logger 名字*/
 
     // The assigned levelInt of this logger. Can be null.
-    transient private Level level;
+    transient private Level level; /* logger 级别 */
 
     // The effective levelInt is the assigned levelInt and if null, a levelInt is
     // inherited form a parent.
@@ -59,7 +59,7 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
      * The parent of this category. All categories have at least one ancestor
      * which is the root category.
      */
-    transient private Logger parent;
+    transient private Logger parent; /* logger 父亲 */
 
     /**
      * The children of this logger. A logger may have zero or more children.
@@ -86,7 +86,7 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
      * <p>
      * 4) AppenderAttachableImpl is thread safe
      */
-    transient private AppenderAttachableImpl<ILoggingEvent> aai;
+    transient private AppenderAttachableImpl<ILoggingEvent> aai; /* logger 日志输出器 列表 */
     /**
      * Additivity is set to true by default, that is children inherit the
      * appenders of their ancestors by default. If this variable is set to
@@ -95,9 +95,9 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
      * its appenders, unless the children have their additivity flag set to
      * <code>false</code> too. See the user manual for more details.
      */
-    transient private boolean additive = true;
+    transient private boolean additive = true; /* 是否向 父类logger 投递日志 */
 
-    final transient LoggerContext loggerContext;
+    final transient LoggerContext loggerContext; /*  logger容器 */
 
     Logger(String name, Logger parent, LoggerContext loggerContext) {
         this.name = name;
@@ -253,9 +253,9 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
      */
     public void callAppenders(ILoggingEvent event) {
         int writes = 0;
-        for (Logger l = this; l != null; l = l.parent) {
+        for (Logger l = this; l != null; l = l.parent) { /* 自底向上打印log */
             writes += l.appendLoopOnAppenders(event);
-            if (!l.additive) {
+            if (!l.additive) {/* 不向父类logger传递log，直接返回 */
                 break;
             }
         }
@@ -267,7 +267,7 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
 
     private int appendLoopOnAppenders(ILoggingEvent event) {
         if (aai != null) {
-            return aai.appendLoopOnAppenders(event);
+            return aai.appendLoopOnAppenders(event); /* 打印log */
         } else {
             return 0;
         }
@@ -373,14 +373,14 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
         final FilterReply decision = loggerContext.getTurboFilterChainDecision_0_3OrMore(marker, this, level, msg, params, t);
 
         if (decision == FilterReply.NEUTRAL) {
-            if (effectiveLevelInt > level.levelInt) {
+            if (effectiveLevelInt > level.levelInt) { /*  level不匹配，返回*/
                 return;
             }
         } else if (decision == FilterReply.DENY) {
             return;
         }
 
-        buildLoggingEventAndAppend(localFQCN, marker, level, msg, params, t);
+        buildLoggingEventAndAppend(localFQCN, marker, level, msg, params, t); /* 输出log */
     }
 
     private void filterAndLog_1(final String localFQCN, final Marker marker, final Level level, final String msg, final Object param, final Throwable t) {
@@ -416,9 +416,9 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
 
     private void buildLoggingEventAndAppend(final String localFQCN, final Marker marker, final Level level, final String msg, final Object[] params,
                     final Throwable t) {
-        LoggingEvent le = new LoggingEvent(localFQCN, this, level, msg, t, params);
+        LoggingEvent le = new LoggingEvent(localFQCN, this, level, msg, t, params); /* 创建 logEvent */
         le.setMarker(marker);
-        callAppenders(le);
+        callAppenders(le); /* 打印log */
     }
 
     public void trace(String msg) {
@@ -576,7 +576,7 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
     }
 
     public void info(String msg) {
-        filterAndLog_0_Or3Plus(FQCN, null, Level.INFO, msg, null, null);
+        filterAndLog_0_Or3Plus(FQCN, null, Level.INFO, msg, null, null); /* 打印log */
     }
 
     public void info(String format, Object arg) {

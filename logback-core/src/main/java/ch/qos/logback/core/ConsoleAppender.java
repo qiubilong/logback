@@ -34,7 +34,7 @@ import ch.qos.logback.core.util.OptionHelper;
  * @author Tom SH Liu
  * @author Ruediger Dohna
  */
-
+ /* 控制台输出 */
 public class ConsoleAppender<E> extends OutputStreamAppender<E> {
 
     protected ConsoleTarget target = ConsoleTarget.SystemOut;

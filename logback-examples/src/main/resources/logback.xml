@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false">
+    <property name="log.path" value="/data/logs/my-experiment"/>
+
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date [%thread] [%file:%line] [%level %logger{0}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>total.log</file>
+        <immediateFlush>false</immediateFlush> <!--不立即刷盘-->
+        <bufferSize>8192</bufferSize><!--文件缓存区，超过自动刷盘-->
+        <encoder>
+            <pattern>%date [%thread] [%file:%line] [%level %logger{0}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 异步日志 -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>2048</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="FILE" />
+    </appender>
+
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file>
+        <immediateFlush>true</immediateFlush> <!--立即刷盘-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名模式：按天滚动，且按大小分割（%i 表示索引号） -->
+            <fileNamePattern>logs/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize> <!-- 单个日志文件最大大小 -->
+            <maxHistory>30</maxHistory><!-- 保留最近 30 天的日志 -->
+            <totalSizeCap>10GB</totalSizeCap>   <!-- 可选：所有日志文件总大小上限（超出自动删除最旧日志） -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] [%file:%line] [%level %logger{0}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="ROLLING"/>
+    </root>
+
+
+    <logger name="myLog" level="INFO" additivity="false" >
+        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ROLLING"/>
+    </logger>
+
+
+</configuration>

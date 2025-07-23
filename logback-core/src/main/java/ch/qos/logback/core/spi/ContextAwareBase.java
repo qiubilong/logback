@@ -28,7 +28,7 @@ import ch.qos.logback.core.status.WarnStatus;
  */
 public class ContextAwareBase implements ContextAware {
     private int noContextWarning = 0;
-    protected Context context;
+    protected Context context; /* logger 容器 LoggerContext */
     final Object declaredOrigin;
 
     public ContextAwareBase() {

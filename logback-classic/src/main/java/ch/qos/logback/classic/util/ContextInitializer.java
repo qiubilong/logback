@@ -41,9 +41,9 @@ import ch.qos.logback.core.util.StatusListenerConfigHelper;
  *
  * @author Ceki Gulcu
  */
-public class ContextInitializer {
+public class ContextInitializer { /* logger容器初始化 */
 
-    final public static String AUTOCONFIG_FILE = "logback.xml";
+    final public static String AUTOCONFIG_FILE = "logback.xml"; /* 默认配置文件 */
     final public static String TEST_AUTOCONFIG_FILE = "logback-test.xml";
     final public static String CONFIG_FILE_PROPERTY = "logback.configurationFile";
 
@@ -59,9 +59,9 @@ public class ContextInitializer {
         }
         final String urlString = url.toString();
         if (urlString.endsWith("xml")) {
-            JoranConfigurator configurator = new JoranConfigurator();
+            JoranConfigurator configurator = new JoranConfigurator(); /* xml 标签解析器 */
             configurator.setContext(loggerContext);
-            configurator.doConfigure(url);
+            configurator.doConfigure(url);/* 解析 logback.xml */
         } else {
             throw new LogbackException("Unexpected filename extension of file [" + url.toString() + "]. Should be .xml");
         }
@@ -115,7 +115,7 @@ public class ContextInitializer {
         if (url != null) {
             return url;
         }
-    
+        /* 加载配置文件 -  logback.xml */
         return getResource(AUTOCONFIG_FILE, myClassLoader, updateStatus);
     }
 
@@ -131,7 +131,7 @@ public class ContextInitializer {
         StatusListenerConfigHelper.installIfAsked(loggerContext);
         URL url = findURLOfDefaultConfigurationFile(true);
         if (url != null) {
-            configureByResource(url);
+            configureByResource(url); /* 解析 logback.xml */
         } else {
             Configurator c = EnvUtil.loadFromServiceLoader(Configurator.class);
             if (c != null) {

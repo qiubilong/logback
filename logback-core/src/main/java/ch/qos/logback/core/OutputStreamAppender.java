@@ -39,7 +39,7 @@ public class OutputStreamAppender<E> extends UnsynchronizedAppenderBase<E> {
      * It is the encoder which is ultimately responsible for writing the event to
      * an {@link OutputStream}.
      */
-    protected Encoder<E> encoder;
+    protected Encoder<E> encoder; /* 日志格式 */
 
     /**
      * All synchronization in this class is done via the lock object.
@@ -51,7 +51,7 @@ public class OutputStreamAppender<E> extends UnsynchronizedAppenderBase<E> {
      */
     private OutputStream outputStream;
 
-    boolean immediateFlush = true;
+    boolean immediateFlush = true; /* 默认每次刷新磁盘 */
 
     /**
     * The underlying output stream used by this appender.

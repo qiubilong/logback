@@ -34,7 +34,7 @@ public class SimpleRuleStore extends ContextAwareBase implements RuleStore {
     static String KLEENE_STAR = "*";
 
     // key: Pattern instance, value: ArrayList containing actions
-    HashMap<ElementSelector, List<Action>> rules = new HashMap<ElementSelector, List<Action>>();
+    HashMap<ElementSelector, List<Action>> rules = new HashMap<ElementSelector, List<Action>>(); /* logback.xml 解析规则 */
 
     // public SimpleRuleStore() {
     // }
@@ -48,7 +48,7 @@ public class SimpleRuleStore extends ContextAwareBase implements RuleStore {
      * that the added action's LoggerRepository will be set in the process.
      */
     public void addRule(ElementSelector elementSelector, Action action) {
-        action.setContext(context);
+        action.setContext(context); /* logger 容器 LoggerContext */
 
         List<Action> a4p = rules.get(elementSelector);
 

@@ -44,7 +44,7 @@ public class EnvUtil {
         return testServiceLoaderClassLoader == null ? Loader.getClassLoaderOfClass(EnvUtil.class) : testServiceLoaderClassLoader;
     }
 
-    public static <T> T loadFromServiceLoader(Class<T> c) {
+    public static <T> T loadFromServiceLoader(Class<T> c) { /* spi机制加载 */
         ServiceLoader<T> loader = ServiceLoader.load(c, getServiceLoaderClassLoader());
         Iterator<T> it = loader.iterator();
         if (it.hasNext())

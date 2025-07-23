@@ -39,7 +39,7 @@ public class JoranConfigurator extends JoranConfiguratorBase<ILoggingEvent> {
     @Override
     public void addInstanceRules(RuleStore rs) {
         // parent rules already added
-        super.addInstanceRules(rs);
+        super.addInstanceRules(rs); /* 解析标签 property , appender */
 
         rs.addRule(new ElementSelector("configuration"), new ConfigurationAction());
 
@@ -51,12 +51,12 @@ public class JoranConfigurator extends JoranConfiguratorBase<ILoggingEvent> {
         rs.addRule(new ElementSelector("configuration/appender/sift"), new SiftAction());
         rs.addRule(new ElementSelector("configuration/appender/sift/*"), new NOPAction());
 
-        rs.addRule(new ElementSelector("configuration/logger"), new LoggerAction());
+        rs.addRule(new ElementSelector("configuration/logger"), new LoggerAction()); /* 解析 自定义 logger */
         rs.addRule(new ElementSelector("configuration/logger/level"), new LevelAction());
 
-        rs.addRule(new ElementSelector("configuration/root"), new RootLoggerAction());
+        rs.addRule(new ElementSelector("configuration/root"), new RootLoggerAction()); /* 解析 根logger */
         rs.addRule(new ElementSelector("configuration/root/level"), new LevelAction());
-        rs.addRule(new ElementSelector("configuration/logger/appender-ref"), new AppenderRefAction<ILoggingEvent>());
+        rs.addRule(new ElementSelector("configuration/logger/appender-ref"), new AppenderRefAction<ILoggingEvent>()); /* 解析 logger 的 appender */
         rs.addRule(new ElementSelector("configuration/root/appender-ref"), new AppenderRefAction<ILoggingEvent>());
 
         // add if-then-else support

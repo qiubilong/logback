@@ -49,18 +49,18 @@ import ch.qos.logback.core.status.WarnStatus;
  * manufacturing source of {@link Logger} instances.
  *
  * @author Ceki Gulcu
- */
+ */    /* 日志上下文 */
 public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCycle {
 
     /** Default setting of packaging data in stack traces */
     public static final boolean DEFAULT_PACKAGING_DATA = false;
 
-    final Logger root;
+    final Logger root; /* 根Logger */
     private int size;
     private int noAppenderWarning = 0;
     final private List<LoggerContextListener> loggerContextListenerList = new ArrayList<LoggerContextListener>();
 
-    private Map<String, Logger> loggerCache;
+    private Map<String, Logger> loggerCache; /*  name - logger */
 
     private LoggerContextVO loggerContextRemoteView;
     private final TurboFilterList turboFilterList = new TurboFilterList();
@@ -76,7 +76,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
         this.loggerCache = new ConcurrentHashMap<String, Logger>();
 
         this.loggerContextRemoteView = new LoggerContextVO(this);
-        this.root = new Logger(Logger.ROOT_LOGGER_NAME, null, this);
+        this.root = new Logger(Logger.ROOT_LOGGER_NAME, null, this); /* 默认创建 根logger */
         this.root.setLevel(Level.DEBUG);
         loggerCache.put(Logger.ROOT_LOGGER_NAME, root);
         initEvaluatorMap();
@@ -113,7 +113,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
     }
 
     @Override
-    public final Logger getLogger(final String name) {
+    public final Logger getLogger(final String name) { /* logger 不存在就创建 */
 
         if (name == null) {
             throw new IllegalArgumentException("name argument cannot be null");
@@ -130,7 +130,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 
         // check if the desired logger exists, if it does, return it
         // without further ado.
-        Logger childLogger = (Logger) loggerCache.get(name);
+        Logger childLogger = (Logger) loggerCache.get(name); /* 1、已经存在logger,直接返回 */
         // if we have the child, then let us return it without wasting time
         if (childLogger != null) {
             return childLogger;
@@ -151,7 +151,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
             synchronized (logger) {
                 childLogger = logger.getChildByName(childName);
                 if (childLogger == null) {
-                    childLogger = logger.createChildByName(childName);
+                    childLogger = logger.createChildByName(childName); /* 按.分隔路径名，递归创建logger */
                     loggerCache.put(childName, childLogger);
                     incSize();
                 }

@@ -48,7 +48,7 @@ public class AppenderAction<E> extends Action {
 
         try {
             addInfo("About to instantiate appender of type [" + className + "]");
-
+            /* 实例化 Appender */
             appender = (Appender<E>) OptionHelper.instantiateByClassName(className, ch.qos.logback.core.Appender.class, context);
 
             appender.setContext(context);
@@ -87,7 +87,7 @@ public class AppenderAction<E> extends Action {
         }
 
         if (appender instanceof LifeCycle) {
-            ((LifeCycle) appender).start();
+            ((LifeCycle) appender).start(); /* appender 解析结束 ，启动 appender */
         }
 
         Object o = ec.peekObject();

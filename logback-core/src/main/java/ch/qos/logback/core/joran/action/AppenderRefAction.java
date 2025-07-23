@@ -22,7 +22,7 @@ import ch.qos.logback.core.spi.AppenderAttachable;
 import ch.qos.logback.core.util.OptionHelper;
 
 import java.util.HashMap;
-
+/* 解析 Logger - Appender */
 public class AppenderRefAction<E> extends Action {
     boolean inError = false;
 
@@ -33,7 +33,7 @@ public class AppenderRefAction<E> extends Action {
 
         // logger.debug("begin called");
 
-        Object o = ec.peekObject();
+        Object o = ec.peekObject(); /* 刚刚 解析<root>或者 <logger> */
 
         if (!(o instanceof AppenderAttachable)) {
             String errMsg = "Could not find an AppenderAttachable at the top of execution stack. Near [" + tagName + "] line " + getLineNumber(ec);
@@ -67,7 +67,7 @@ public class AppenderRefAction<E> extends Action {
         }
 
         addInfo("Attaching appender named [" + appenderName + "] to " + appenderAttachable);
-        appenderAttachable.addAppender(appender);
+        appenderAttachable.addAppender(appender); /* 解析 Logger - Appender */
     }
 
     public void end(InterpretationContext ec, String n) {

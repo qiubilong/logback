@@ -32,7 +32,7 @@ import ch.qos.logback.core.util.StatusPrinter;
  * {@link ILoggerFactory} is performed using information returned by this class.
  * 
  * @author Ceki G&uuml;lc&uuml;</a>
- */
+ */     /* LoggerFactory 指定加载 - "org/slf4j/impl/StaticLoggerBinder.class" --> 生成 LoggerContext 容器   */
 public class StaticLoggerBinder implements LoggerFactoryBinder {
 
     /**
@@ -52,11 +52,11 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
     private static Object KEY = new Object();
 
     static {
-        SINGLETON.init();
+        SINGLETON.init(); /* 加载 logback.xml 初始化 LoggerContext */
     }
 
     private boolean initialized = false;
-    private LoggerContext defaultLoggerContext = new LoggerContext();
+    private LoggerContext defaultLoggerContext = new LoggerContext(); /* 日志上下文 */
     private final ContextSelectorStaticBinder contextSelectorBinder = ContextSelectorStaticBinder.getSingleton();
 
     private StaticLoggerBinder() {
@@ -81,7 +81,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
     void init() {
         try {
             try {
-                new ContextInitializer(defaultLoggerContext).autoConfig();
+                new ContextInitializer(defaultLoggerContext).autoConfig();/* 加载 logback.xml 配置  */
             } catch (JoranException je) {
                 Util.report("Failed to auto configure default logger context", je);
             }

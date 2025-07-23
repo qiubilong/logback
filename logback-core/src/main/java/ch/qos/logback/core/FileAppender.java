@@ -35,7 +35,7 @@ import ch.qos.logback.core.util.FileUtil;
  * at http://logback.qos.ch/manual/appenders.html#FileAppender
  * 
  * @author Ceki G&uuml;lc&uuml;
- */
+ */    /* 文件 - 日志输出器 */
 public class FileAppender<E> extends OutputStreamAppender<E> {
 
     public static final long DEFAULT_BUFFER_SIZE = 8192;
@@ -52,12 +52,12 @@ public class FileAppender<E> extends OutputStreamAppender<E> {
     /**
      * The name of the active log file.
      */
-    protected String fileName = null;
+    protected String fileName = null; /* 文件名 */
 
     private boolean prudent = false;
 
     private FileSize bufferSize = new FileSize(DEFAULT_BUFFER_SIZE);
-
+    /* 父类 boolean immediateFlush = true; 默认每次刷新磁盘 */
     /**
      * The <b>File</b> property takes a string value which should be the name of
      * the file to append to.

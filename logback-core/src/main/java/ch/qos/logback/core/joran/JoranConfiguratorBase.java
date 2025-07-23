@@ -56,7 +56,7 @@ abstract public class JoranConfiguratorBase<E> extends GenericConfigurator {
 
         // is "configuration/variable" referenced in the docs?
         rs.addRule(new ElementSelector("configuration/variable"), new PropertyAction());
-        rs.addRule(new ElementSelector("configuration/property"), new PropertyAction());
+        rs.addRule(new ElementSelector("configuration/property"), new PropertyAction()); /* 解析 property = key - value */
 
         rs.addRule(new ElementSelector("configuration/substitutionProperty"), new PropertyAction());
 
@@ -72,7 +72,7 @@ abstract public class JoranConfiguratorBase<E> extends GenericConfigurator {
 
         rs.addRule(new ElementSelector("configuration/statusListener"), new StatusListenerAction());
 
-        rs.addRule(new ElementSelector("configuration/appender"), new AppenderAction<E>());
+        rs.addRule(new ElementSelector("configuration/appender"), new AppenderAction<E>()); /* 解析 appender */
         rs.addRule(new ElementSelector("configuration/appender/appender-ref"), new AppenderRefAction<E>());
         rs.addRule(new ElementSelector("configuration/newRule"), new NewRuleAction());
         rs.addRule(new ElementSelector("*/param"), new ParamAction(getBeanDescriptionCache()));

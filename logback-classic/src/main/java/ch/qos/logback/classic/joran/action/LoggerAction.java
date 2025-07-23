@@ -28,7 +28,7 @@ import ch.qos.logback.core.util.OptionHelper;
  * 
  * @author Ceki Gulcu
  */
-public class LoggerAction extends Action {
+public class LoggerAction extends Action { /* 解析自定义logger */
     public static final String LEVEL_ATTRIBUTE = "level";
 
     boolean inError = false;
@@ -50,7 +50,7 @@ public class LoggerAction extends Action {
             addError(errorMsg);
             return;
         }
-
+        /* 1、logger不存在就创建 logger */
         logger = loggerContext.getLogger(loggerName);
 
         String levelStr = ec.subst(attributes.getValue(LEVEL_ATTRIBUTE));
@@ -62,7 +62,7 @@ public class LoggerAction extends Action {
             } else {
                 Level level = Level.toLevel(levelStr);
                 addInfo("Setting level of logger [" + loggerName + "] to " + level);
-                logger.setLevel(level);
+                logger.setLevel(level); /* 2、设置 logger level */
             }
         }
 
@@ -70,7 +70,7 @@ public class LoggerAction extends Action {
         if (!OptionHelper.isEmpty(additivityStr)) {
             boolean additive = OptionHelper.toBoolean(additivityStr, true);
             addInfo("Setting additivity of logger [" + loggerName + "] to " + additive);
-            logger.setAdditive(additive);
+            logger.setAdditive(additive); /* 是否向 父类logger 投递日志 */
         }
         ec.pushObject(logger);
     }
