@@ -40,7 +40,7 @@ import java.util.concurrent.BlockingQueue;
 public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implements AppenderAttachable<E> {
 
     AppenderAttachableImpl<E> aai = new AppenderAttachableImpl<E>();
-    BlockingQueue<E> blockingQueue;
+    BlockingQueue<E> blockingQueue; /* 日志队列 - new ArrayBlockingQueue<E>(queueSize) */
 
     /**
      * The default buffer size.
@@ -51,7 +51,7 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
     int appenderCount = 0;
 
     static final int UNDEFINED = -1;
-    int discardingThreshold = UNDEFINED;
+    int discardingThreshold = UNDEFINED; /* 队列 - 预留容量 */
     boolean neverBlock = false;
 
     Worker worker = new Worker();
@@ -102,13 +102,13 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
         blockingQueue = new ArrayBlockingQueue<E>(queueSize);
 
         if (discardingThreshold == UNDEFINED)
-            discardingThreshold = queueSize / 5;
+            discardingThreshold = queueSize / 5; /* 默认预留 20% 空间 */
         addInfo("Setting discardingThreshold to " + discardingThreshold);
         worker.setDaemon(true);
         worker.setName("AsyncAppender-Worker-" + getName());
         // make sure this instance is marked as "started" before staring the worker Thread
         super.start();
-        worker.start();
+        worker.start(); /* 消费日志线程 */
     }
 
     @Override
@@ -130,7 +130,7 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
         try {
             interruptUtil.maskInterruptFlag();
 
-            worker.join(maxFlushTime);
+            worker.join(maxFlushTime); /* 最多等1s */
 
             // check to see if the thread ended and if not add a warning message
             if (worker.isAlive()) {
@@ -154,22 +154,22 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
 
     @Override
     protected void append(E eventObject) {
-        if (isQueueBelowDiscardingThreshold() && isDiscardable(eventObject)) {
+        if (isQueueBelowDiscardingThreshold() && isDiscardable(eventObject)) { /* 队列不够时，仅保留error日志 */
             return;
         }
         preprocess(eventObject);
-        put(eventObject);
+        put(eventObject);/* 存入队列 */
     }
 
     private boolean isQueueBelowDiscardingThreshold() {
-        return (blockingQueue.remainingCapacity() < discardingThreshold);
+        return (blockingQueue.remainingCapacity() < discardingThreshold); /* 队列不够 */
     }
 
     private void put(E eventObject) {
         if (neverBlock) {
             blockingQueue.offer(eventObject);
         } else {
-            putUninterruptibly(eventObject);
+            putUninterruptibly(eventObject); /* 存入队列 */
         }
     }
 
@@ -178,7 +178,7 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
         try {
             while (true) {
                 try {
-                    blockingQueue.put(eventObject);
+                    blockingQueue.put(eventObject); /* 队列满时，挂起等待 */
                     break;
                 } catch (InterruptedException e) {
                     interrupted = true;
@@ -284,7 +284,7 @@ public class AsyncAppenderBase<E> extends UnsynchronizedAppenderBase<E> implemen
             AppenderAttachableImpl<E> aai = parent.aai;
 
             // loop while the parent is started
-            while (parent.isStarted()) {
+            while (parent.isStarted()) { /* 消费日志 */
                 try {
                     E e = parent.blockingQueue.take();
                     aai.appendLoopOnAppenders(e);

@@ -50,7 +50,7 @@ public abstract class GenericConfigurator extends ContextAwareBase {
             urlConnection.setUseCaches(false);
 
             in = urlConnection.getInputStream();
-            doConfigure(in, url.toExternalForm());
+            doConfigure(in, url.toExternalForm());/* 解析 logback.xml */
         } catch (IOException ioe) {
             String errMsg = "Could not open URL [" + url + "].";
             addError(errMsg, ioe);

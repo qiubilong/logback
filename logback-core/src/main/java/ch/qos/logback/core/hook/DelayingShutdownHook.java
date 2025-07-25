@@ -30,7 +30,7 @@ public class DelayingShutdownHook extends ShutdownHookBase {
     /**
      * The delay in milliseconds before the ShutdownHook stops the logback context
      */
-    private Duration delay = DEFAULT_DELAY;
+    private Duration delay = DEFAULT_DELAY; /* 默认 0s */
 
     public DelayingShutdownHook() {
     }

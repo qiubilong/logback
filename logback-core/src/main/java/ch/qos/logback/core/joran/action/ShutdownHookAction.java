@@ -26,7 +26,7 @@ import ch.qos.logback.core.util.OptionHelper;
  * 
  * @author Mike Reinhold
  */
-public class ShutdownHookAction extends Action {
+public class ShutdownHookAction extends Action { /* 解析标签 <shutdownHook> */
 
     ShutdownHookBase hook;
     private boolean inError;
@@ -81,7 +81,7 @@ public class ShutdownHookAction extends Action {
 
             Thread hookThread = new Thread(hook, "Logback shutdown hook [" + context.getName() + "]");
 
-            context.putObject(CoreConstants.SHUTDOWN_HOOK_THREAD, hookThread);
+            context.putObject(CoreConstants.SHUTDOWN_HOOK_THREAD, hookThread); /* 注册 ShutDownHook */
             Runtime.getRuntime().addShutdownHook(hookThread);
         }
     }

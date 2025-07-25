@@ -23,7 +23,7 @@ import ch.qos.logback.core.joran.action.ActionConst;
 import ch.qos.logback.core.joran.spi.InterpretationContext;
 import ch.qos.logback.core.util.OptionHelper;
 
-public class RootLoggerAction extends Action {
+public class RootLoggerAction extends Action { /* 解析 <root> 标签 */
 
     Logger root;
     boolean inError = false;

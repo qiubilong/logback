@@ -106,11 +106,11 @@ public class ContextInitializer { /* logger容器初始化 */
 
     public URL findURLOfDefaultConfigurationFile(boolean updateStatus) {
         ClassLoader myClassLoader = Loader.getClassLoaderOfObject(this);
-        URL url = findConfigFileURLFromSystemProperties(myClassLoader, updateStatus);
+        URL url = findConfigFileURLFromSystemProperties(myClassLoader, updateStatus);//-Dlogback.configurationFile 指定
         if (url != null) {
             return url;
         }
-
+                         //logback-test.xml
         url = getResource(TEST_AUTOCONFIG_FILE, myClassLoader, updateStatus);
         if (url != null) {
             return url;
@@ -129,7 +129,7 @@ public class ContextInitializer { /* logger容器初始化 */
 
     public void autoConfig() throws JoranException {
         StatusListenerConfigHelper.installIfAsked(loggerContext);
-        URL url = findURLOfDefaultConfigurationFile(true);
+        URL url = findURLOfDefaultConfigurationFile(true); /* 查找 logback.xml */
         if (url != null) {
             configureByResource(url); /* 解析 logback.xml */
         } else {

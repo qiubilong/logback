@@ -19,7 +19,7 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
 import ch.qos.logback.core.joran.util.PropertySetter;
 import ch.qos.logback.core.joran.util.beans.BeanDescriptionCache;
 
-public class ParamAction extends Action {
+public class ParamAction extends Action { /* 设置对象参数 */
     static String NO_NAME = "No name attribute in <param> element";
     static String NO_VALUE = "No value attribute in <param> element";
     boolean inError = false;

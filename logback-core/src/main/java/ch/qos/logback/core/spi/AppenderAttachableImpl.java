@@ -47,8 +47,8 @@ public class AppenderAttachableImpl<E> implements AppenderAttachable<E> {
         int size = 0;
         final Appender<E>[] appenderArray = appenderList.asTypedArray();
         final int len = appenderArray.length;
-        for (int i = 0; i < len; i++) { /* 打印log */
-            appenderArray[i].doAppend(e);
+        for (int i = 0; i < len; i++) {
+            appenderArray[i].doAppend(e);/* 打印日志 - UnsynchronizedAppenderBase */
             size++;
         }
         return size;

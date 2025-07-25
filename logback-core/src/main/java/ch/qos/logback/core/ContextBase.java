@@ -43,7 +43,7 @@ public class ContextBase implements Context, LifeCycle {
     // when it changes so that a new instance of propertyMap can be
     // serialized. For the time being, we ignore this shortcoming.
     Map<String, String> propertyMap = new HashMap<String, String>(); /* property配置 = key - value */
-    Map<String, Object> objectMap = new HashMap<String, Object>();
+    Map<String, Object> objectMap = new HashMap<String, Object>();/* 对象存储map */
 
     LogbackLock configurationLock = new LogbackLock();
 

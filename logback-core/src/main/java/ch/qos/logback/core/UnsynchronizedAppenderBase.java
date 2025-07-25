@@ -81,7 +81,7 @@ abstract public class UnsynchronizedAppenderBase<E> extends ContextAwareBase imp
             }
 
             // ok, we now invoke derived class' implementation of append
-            this.append(eventObject);
+            this.append(eventObject);/* 写入log - OutputStreamAppender  */
 
         } catch (Exception e) {
             if (exceptionCount++ < ALLOWED_REPEATS) {

@@ -22,7 +22,7 @@ import ch.qos.logback.core.spi.AppenderAttachable;
 import ch.qos.logback.core.util.OptionHelper;
 
 import java.util.HashMap;
-/* 解析 Logger - Appender */
+/* 解析logger输出器 标签 <appender-ref ref="imChatAppender"/> */
 public class AppenderRefAction<E> extends Action {
     boolean inError = false;
 
@@ -33,7 +33,7 @@ public class AppenderRefAction<E> extends Action {
 
         // logger.debug("begin called");
 
-        Object o = ec.peekObject(); /* 刚刚 解析<root>或者 <logger> */
+        Object o = ec.peekObject(); /* 刚刚 解析<root>、 <logger>、 异步 AsyncAppender  对象 */
 
         if (!(o instanceof AppenderAttachable)) {
             String errMsg = "Could not find an AppenderAttachable at the top of execution stack. Near [" + tagName + "] line " + getLineNumber(ec);
@@ -43,7 +43,7 @@ public class AppenderRefAction<E> extends Action {
         }
 
         AppenderAttachable<E> appenderAttachable = (AppenderAttachable<E>) o;
-
+         /* 1、解析名字  ref="imChatAppender" */
         String appenderName = ec.subst(attributes.getValue(ActionConst.REF_ATTRIBUTE));
 
         if (OptionHelper.isEmpty(appenderName)) {
@@ -54,7 +54,7 @@ public class AppenderRefAction<E> extends Action {
 
             return;
         }
-
+        /* 2、找到 appender */
         HashMap<String, Appender<E>> appenderBag = (HashMap<String, Appender<E>>) ec.getObjectMap().get(ActionConst.APPENDER_BAG);
         Appender<E> appender = (Appender<E>) appenderBag.get(appenderName);
 
@@ -65,9 +65,9 @@ public class AppenderRefAction<E> extends Action {
             addError("See " + CoreConstants.CODES_URL + "#appender_order for more details.");
             return;
         }
-
+        /* 3、添加 Appender */
         addInfo("Attaching appender named [" + appenderName + "] to " + appenderAttachable);
-        appenderAttachable.addAppender(appender); /* 解析 Logger - Appender */
+        appenderAttachable.addAppender(appender); 
     }
 
     public void end(InterpretationContext ec, String n) {

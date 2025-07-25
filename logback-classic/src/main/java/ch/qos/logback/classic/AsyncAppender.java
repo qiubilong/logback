@@ -24,7 +24,7 @@ import ch.qos.logback.core.AsyncAppenderBase;
  *
  * @author Ceki G&uuml;lc&uuml;
  * @since 1.0.4
- */
+ */    /* 异步包装 - 日志输出器 */
 public class AsyncAppender extends AsyncAppenderBase<ILoggingEvent> {
 
     boolean includeCallerData = false;
@@ -36,7 +36,7 @@ public class AsyncAppender extends AsyncAppenderBase<ILoggingEvent> {
      */
     protected boolean isDiscardable(ILoggingEvent event) {
         Level level = event.getLevel();
-        return level.toInt() <= Level.INFO_INT;
+        return level.toInt() <= Level.INFO_INT; /* 队列不够时，只保留error 级别 */
     }
 
     protected void preprocess(ILoggingEvent eventObject) {

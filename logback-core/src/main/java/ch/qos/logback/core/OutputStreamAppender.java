@@ -99,7 +99,7 @@ public class OutputStreamAppender<E> extends UnsynchronizedAppenderBase<E> {
             return;
         }
 
-        subAppend(eventObject);
+        subAppend(eventObject); /* 写入日志 - OutputStreamAppender */
     }
 
     /**
@@ -194,11 +194,11 @@ public class OutputStreamAppender<E> extends UnsynchronizedAppenderBase<E> {
         if(byteArray == null || byteArray.length == 0)
             return;
         
-        lock.lock();
+        lock.lock(); /* 加锁保证日志顺序性 */
         try {
-            this.outputStream.write(byteArray);
+            this.outputStream.write(byteArray); /* 1、log写入文件 */
             if (immediateFlush) {
-                this.outputStream.flush();
+                this.outputStream.flush();/* 2、立即刷新磁盘 */
             }
         } finally {
             lock.unlock();
@@ -228,7 +228,7 @@ public class OutputStreamAppender<E> extends UnsynchronizedAppenderBase<E> {
             // lock.lock();
 
             byte[] byteArray = this.encoder.encode(event);
-            writeBytes(byteArray);
+            writeBytes(byteArray);/* 同步写入磁盘 */
 
         } catch (IOException ioe) {
             // as soon as an exception occurs, move to non-started state

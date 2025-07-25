@@ -64,7 +64,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
     }
 
     public static StaticLoggerBinder getSingleton() {
-        return SINGLETON;
+        return SINGLETON;  /* 单例 - logger绑定器 */
     }
 
     /**
@@ -104,7 +104,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
         if (contextSelectorBinder.getContextSelector() == null) {
             throw new IllegalStateException("contextSelector cannot be null. See also " + NULL_CS_URL);
         }
-        return contextSelectorBinder.getContextSelector().getLoggerContext();
+        return contextSelectorBinder.getContextSelector().getLoggerContext(); /* 也是返回 defaultLoggerContext */
     }
 
     public String getLoggerFactoryClassStr() {
